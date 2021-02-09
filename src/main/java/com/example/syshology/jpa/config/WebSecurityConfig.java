@@ -1,5 +1,7 @@
 package com.example.syshology.jpa.config;
 
+import com.example.syshology.jpa.config.jwt.JwtAuthenticationEntryPoint;
+import com.example.syshology.jpa.config.jwt.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

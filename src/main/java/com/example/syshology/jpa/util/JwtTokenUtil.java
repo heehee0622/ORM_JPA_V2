@@ -1,4 +1,4 @@
-package com.example.syshology.jpa.config;
+package com.example.syshology.jpa.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

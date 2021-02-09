@@ -1,4 +1,4 @@
-package com.example.syshology.jpa.config;
+package com.example.syshology.jpa.dto;
 
 import java.io.Serializable;
 

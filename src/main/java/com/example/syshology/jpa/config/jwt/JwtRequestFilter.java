@@ -1,8 +1,9 @@
-package com.example.syshology.jpa.config;
+package com.example.syshology.jpa.config.jwt;
 
+import com.example.syshology.jpa.util.JwtTokenUtil;
+import com.example.syshology.jpa.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor

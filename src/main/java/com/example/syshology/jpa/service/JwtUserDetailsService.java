@@ -1,4 +1,4 @@
-package com.example.syshology.jpa.config;
+package com.example.syshology.jpa.service;
 
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.repository.MemberRepository;

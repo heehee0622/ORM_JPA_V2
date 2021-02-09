@@ -1,4 +1,4 @@
-package com.example.syshology.jpa.config;
+package com.example.syshology.jpa.config.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
