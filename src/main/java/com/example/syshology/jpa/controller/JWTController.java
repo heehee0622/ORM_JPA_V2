@@ -1,7 +1,7 @@
 package com.example.syshology.jpa.controller;
 
-import com.example.syshology.jpa.dto.JwtRequest;
-import com.example.syshology.jpa.dto.JwtResponse;
+import com.example.syshology.jpa.dto.JWTReqDto;
+import com.example.syshology.jpa.dto.JWTResDto;
 import com.example.syshology.jpa.util.JwtTokenUtil;
 import com.example.syshology.jpa.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 //@CrossOrigin
-public class JwtAuthenticationController {
+public class JWTController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,7 +30,7 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService userDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest, HttpServletResponse response) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JWTReqDto authenticationRequest, HttpServletResponse response) throws Exception {
         System.out.println("로그인 입니다.");
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -49,10 +49,10 @@ public class JwtAuthenticationController {
         bearer.setHttpOnly(Boolean.TRUE);
         bearer.setMaxAge(100);
         response.addCookie(bearer);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JWTResDto(token));
     }
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
-    public ResponseEntity<?> Hello(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> Hello(@RequestBody JWTReqDto authenticationRequest) throws Exception {
         System.out.println("Hello 테스트 입니다.");
 
         System.out.println("hello : " +  authenticationRequest.getUsername());
