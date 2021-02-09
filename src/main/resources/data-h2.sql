@@ -1,5 +1,5 @@
-insert into MEMBER (city, street, zipcode, name, member_id) values ('울산', '1', '1111', 'userA', 9);
-insert into MEMBER (city, street, zipcode, name, member_id) values ('포항', '1', '1111', 'userA', 10);
+insert into MEMBER (city, street, zipcode, name, member_id, passwd) values ('울산', '1', '1111', 'userC', 3, '$2a$10$d3SPZzqJyAV9y/7FIIzzh.paClBx6SqYatz4Pbu1T5Mtu0gFYmPVm');
+insert into MEMBER (city, street, zipcode, name, member_id, passwd) values ('포항', '1', '1111', 'userD', 4, '$2a$10$d3SPZzqJyAV9y/7FIIzzh.paClBx6SqYatz4Pbu1T5Mtu0gFYmPVm');
 /**
 만약 위의 sql이 실행이 되지 않는다면 spring.jpa.hibernate.ddl-auto=none 을 하고 사용 해라.
 

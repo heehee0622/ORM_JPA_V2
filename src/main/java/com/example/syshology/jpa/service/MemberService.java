@@ -29,7 +29,7 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getName());
+        List<Member> findMembers = memberRepository.findMembersByName(member.getName());
         if (!findMembers.isEmpty()) throw new IllegalStateException("이미 존재하는 회원 입니다.");
     }
 
@@ -46,7 +46,7 @@ public class MemberService {
     }
 
     public List<Member> findByName(String name) {
-        return memberRepository.findByName(name);
+        return memberRepository.findMembersByName(name);
     }
 
     public List<Member> findByJpql() {

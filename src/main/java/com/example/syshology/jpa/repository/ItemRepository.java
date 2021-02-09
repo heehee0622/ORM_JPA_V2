@@ -11,22 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Project : IntelliJ IDEA
  */
 public interface ItemRepository extends JpaRepository<Item, Long> {
-//    @PersistenceContext
-//    protected EntityManager entityManager;
-//    public void save(Item item){
-//        if (item.getId() == null) {
-//            entityManager.persist(item);
-//        }else {
-//            entityManager.merge(item);
-//        }
-//    }
-//
-//    public Optional<Item> findOne(Long id){
-//        Item item = entityManager.find(Item.class, id);
-//        return Optional.ofNullable(item);
-//    }
-//    public List<Item> findAll(){
-//        return entityManager.createQuery("select i from Item  i", Item.class).getResultList();
-//    }
+
 
 }

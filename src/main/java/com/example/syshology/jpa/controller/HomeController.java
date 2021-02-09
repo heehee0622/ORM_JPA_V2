@@ -18,4 +18,9 @@ public class HomeController {
         modelAndView.setViewName("index");
         return modelAndView;
     }
+    @RequestMapping("/login")
+    public ModelAndView login(ModelAndView modelAndView) {
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
 }

@@ -14,31 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
-    public List<Member> findByName(String name);
-//    @PersistenceContext
-//    protected EntityManager entityManager;
-//    public void save(Member member){
-//        entityManager.persist(member);
-//    }
-//
-//    public Optional<Member> findOne(Long id){
-//        Member member = entityManager.find(Member.class, id);
-//        return Optional.ofNullable(member);
-//    }
-//
-//    public List<Member> findAll(){
-//        return entityManager.createQuery("select  m from Member m", Member.class).getResultList();
-//    }
-//
-//    public List<Member> findByName(String name){
-//        return entityManager.createQuery("select m from Member m where m.name = :name", Member.class)
-//                .setParameter("name", name).getResultList();
-//    }
-//
-//    public List<Member> findOneWithJpql(String name) {
-//        return entityManager.createQuery("select  m from Member m where m.name= :name", Member.class).setParameter("name", name).getResultList();
-//
-//    }
+    public Member findByName(String name);
+    public List<Member> findMembersByName(String name);
+
     @Query(value = "select m from Member m join m.orders")
     public List<Member> findOneWithJoinJpql();
 

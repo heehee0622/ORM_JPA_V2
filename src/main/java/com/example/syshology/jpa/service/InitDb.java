@@ -2,6 +2,7 @@ package com.example.syshology.jpa.service;
 
 import com.example.syshology.jpa.entity.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,8 +23,9 @@ public class InitDb {
  @RequiredArgsConstructor
  static class InitService {
  private final EntityManager em;
+ private final BCryptPasswordEncoder bCryptPasswordEncoder;
  public void dbInit1() throws Exception {
- Member member = createMember("userA", "서울", "1", "1111");
+ Member member = createMember("userA", "서울", "1", "1111", "12345");
  em.persist(member);
  Book book1 = createBook("JPA1 BOOK", 10000, 100);
  em.persist(book1);
@@ -35,7 +37,7 @@ public class InitDb {
  em.persist(order);
  }
  public void dbInit2()throws Exception {
- Member member = createMember("userB", "진주", "2", "2222");
+ Member member = createMember("userB", "진주", "2", "2222", "12345");
  em.persist(member);
  Book book1 = createBook("SPRING1 BOOK", 20000, 200);
  em.persist(book1);
@@ -49,9 +51,10 @@ orderItem2);
  em.persist(order);
  }
  private Member createMember(String name, String city, String street,
-                             String zipcode) {
+                             String zipcode, String passwd ) {
  Member member = new Member();
  member.setName(name);
+ member.setPasswd(bCryptPasswordEncoder.encode(passwd));
  member.setAddress(new Address(city, street, zipcode));
  return member;
  }
