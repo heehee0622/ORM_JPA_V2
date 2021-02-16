@@ -1,5 +1,7 @@
 package com.example.syshology.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,8 +23,7 @@ public class Member {
     private String name;
     @Embedded
     private Address address;
+    @JsonIgnore
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
-
-
 }

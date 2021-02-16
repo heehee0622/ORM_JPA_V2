@@ -1,6 +1,7 @@
 package com.example.syshology.jpa.entity;
 
 import com.example.syshology.jpa.type.DeliveryStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Delivery {
  @Column(name = "delivery_id")
  private Long id;
  @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
+ @JsonIgnore
  private Order order;
  @Embedded
  private Address address;

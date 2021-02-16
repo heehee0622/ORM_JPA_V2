@@ -2,6 +2,7 @@ package com.example.syshology.jpa.config;
 
 import com.example.syshology.jpa.config.jwt.JwtAuthenticationEntryPoint;
 import com.example.syshology.jpa.config.jwt.JwtRequestFilter;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // This example does not require the use of CSRF
         httpSecurity.headers().frameOptions().disable().and().csrf().disable()
                 // Authentication pages do not require permissions
-                .authorizeRequests().antMatchers("/authenticate", "/members/new", "/h2-console/**").permitAll().
+                .authorizeRequests().antMatchers("/authenticate", "/members/new", "/h2/**", "/test/**").permitAll().
                 //Other pages
                  anyRequest().authenticated().and().
                 //Login Page Simulator Client
@@ -70,5 +71,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //Verify that the request is correct
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+    @Bean
+    Hibernate5Module hibernate5Module() {
+        Hibernate5Module hibernate5Module = new Hibernate5Module();
+        hibernate5Module.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING,
+                true);
+        return hibernate5Module;
     }
 }

@@ -3,6 +3,7 @@ package com.example.syshology.jpa.controller;
 import com.example.syshology.jpa.entity.Item;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.entity.Order;
+import com.example.syshology.jpa.repository.OrderRepository;
 import com.example.syshology.jpa.repository.OrderSearch;
 import com.example.syshology.jpa.service.ItemService;
 import com.example.syshology.jpa.service.MemberService;
@@ -24,13 +25,10 @@ import java.util.List;
  */
 @RestController
 public class OrderController {
-
-    @Autowired
-    OrderService orderService;
-    @Autowired
-    MemberService memberService;
-    @Autowired
-    ItemService itemService;
+    @Autowired private OrderService orderService;
+    @Autowired private MemberService memberService;
+    @Autowired private ItemService itemService;
+    @Autowired private OrderRepository orderRepository;
     @GetMapping(value = "/order")
     public ModelAndView createForm(ModelAndView modelAndView){
         List<Member> members = memberService.findMembers();
@@ -58,4 +56,5 @@ public class OrderController {
         orderService.cancelOrder(orderId);
         response.sendRedirect("/orders");
     }
+
 }

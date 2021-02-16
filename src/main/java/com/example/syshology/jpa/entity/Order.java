@@ -2,6 +2,8 @@ package com.example.syshology.jpa.entity;
 
 import com.example.syshology.jpa.type.DeliveryStatus;
 import com.example.syshology.jpa.type.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,9 +20,10 @@ public class Order {
  @Id @GeneratedValue
  @Column(name = "order_id")
  private Long id;
- @ManyToOne(fetch = FetchType.EAGER)
+ @ManyToOne(fetch = FetchType.LAZY)
  @JoinColumn(name = "member_id")
  private Member member; //주문 회원
+ @JsonIgnore
  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
  private List<OrderItem> orderItems = new ArrayList<>();
  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -29,6 +32,7 @@ public class Order {
  private LocalDateTime orderDate; //주문시간
  @Enumerated(EnumType.STRING)
  private OrderStatus status; //주문상태 [ORDER, CANCEL]
+ private String name;
  //==연관관계 메서드==//
  public void setMember(Member member) {
  this.member = member;
@@ -44,12 +48,13 @@ public class Order {
  delivery.setOrder(this);
  }
  //== 생성 메서드 ==//
- public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+ public static Order createOrder(Member member, Delivery delivery, String name,OrderItem... orderItems) {
   Order order = new Order();
 
   try {
   order.setMember(member);
   order.setDelivery(delivery);
+  order.setName(name);
   }catch (Exception e){
    System.out.println(e.getMessage());
   }
