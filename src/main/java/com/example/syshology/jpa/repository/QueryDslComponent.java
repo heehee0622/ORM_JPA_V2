@@ -8,4 +8,5 @@ package com.example.syshology.jpa.repository;
  * Project : IntelliJ IDEA
  */
 public class QueryDslComponent {
+    private String add;
 }
