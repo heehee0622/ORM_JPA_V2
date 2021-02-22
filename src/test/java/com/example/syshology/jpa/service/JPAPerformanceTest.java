@@ -4,6 +4,7 @@ import com.example.syshology.jpa.dto.OrderQueryDto;
 import com.example.syshology.jpa.dto.SimpleOrderDto;
 import com.example.syshology.jpa.entity.Order;
 import com.example.syshology.jpa.entity.OrderItem;
+import org.assertj.core.api.Assertions;
 import org.hibernate.mapping.ToOne;
 import org.junit.Test;
 import org.junit.runner.RunWith;
