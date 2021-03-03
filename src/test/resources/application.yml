@@ -1,16 +1,12 @@
-profiles:
-  active: LOCAL
+#profiles:
+#  active: LOCAL
 spring:
-  thymeleaf:
-    prefix: classpath:/templates/
   datasource:
     url: jdbc:h2:mem:testdb
-#    url: jdbc:h2:tcp://localhost/~/test
     platform: h2
     username: sa
     password:
     driverClassName: org.h2.Driver
-#    initialization-mode: always   // sql file 초기화 가능 (메모리 모드 이외에도 가능)
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
@@ -40,8 +36,6 @@ logging:
         SQL: info
         type:
           descriptor: info
-#      com.zaxxer.hikari.HikariDataSource: trace
-
-
+      com.zaxxer.hikari.HikariDataSource: trace
 jwt:
   secret: jwtsecretkey
