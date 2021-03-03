@@ -1,9 +1,8 @@
 package com.example.syshology.jpa.service;
 
 import com.example.syshology.jpa.dto.MemberDto;
-import com.example.syshology.jpa.dto.MemberIdDto;
 import com.example.syshology.jpa.entity.Member;
-import com.example.syshology.jpa.projection.MemberProjection;
+import com.example.syshology.jpa.repository.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by s.h.kim.
@@ -31,65 +29,42 @@ import java.util.stream.Collectors;
 public class JPAQueryTest {
     @Autowired
     MemberService memberService;
+    @Autowired
+    MemberRepository memberRepository;
 
     //  ============================================ 기본 조회 테스트 ==========================================
     @Test
-    public void findMember() {
-        /*
-        1.  id  조회 이기 때문에  연관관계를 확인 하여 조인하고, 연관관계는 fetch 기본 전략을 따른다. 조인으로 조회 한다.
-         */
-        Member member = memberService.findOne(1L);
-        System.out.println(member.getName());
-    }
-
-    @Test
-    public void findByName() {
-        /*
-            1. id가 아닌 name 으로 조회 하기 때문에 엔티티 연관관계를 보고 조인하지 않는다.
-            2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다.
-         */
-        List<Member> members = memberService.findByName("userA");
-        for (Member member : members) {
-            System.out.println(member.getName());
-        }
-    }
-
-    @Test
-    public void findMembers()/*
-             1. id 조건으로 조회 하지 않기 때문에 엔티티 연관관계를 보고 조인하지 않는다.
-            2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다.
-         */ {
-        List<Member> members = memberService.findMembers();
-        for (Member member : members) {
-            System.out.println(member.getName());
-        }
-    }
-
-    @Test
-    public void findMembersWithJpql() {
+    public void findMembersWithQD() {
 ///        1. id 조건으로 조회 하지 않기 때문에 엔티티 연관관계를 보고 조인하지 않는다.
-//        2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다.
-        List<Member> members = memberService.findByJpql();
+//        2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다. (현재 fetch batch가 설정되어 있기에 in 조건으로 하나의 쿼리로  조회한다.)
+        List<Member> members = memberService.findByQD();
         for (Member member : members) {
             System.out.println(member.getName());
         }
     }
+    @Test
+    /**
+     * SELECT m.orders from Member m; // Member 안에 eager로 되어 있고, m을 조회 하면, 자동으로 orders 조회 한다. 하지만 쿼리에서 m.orders를 조호 하면 자동으로 조인 한다.
+     */
+    public void findOrderInMemberQD(){
+        memberRepository.findOrdersInMemberQD();
+    }
 
     @Test
-    public void findMemberWithJpqlJoin() {
+    public void findMemberWithJoinQD() {
         // 1. JPQL 사용시 기본 엔티티 연관관계를 보고 조인하지 않는다.
         // 2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다.
-        List<Member> byIdJoinJpql = memberService.findByIdJoinJpql();
+        List<Member> byIdJoinJpql = memberService.findJoinQD();
         for (Member member : byIdJoinJpql) {
             System.out.println(member.getName());
         }
     }
 
     @Test
-    public void findMemberWithJpqlJoinFetch() {
+    public void findMemberJoinFetchQD() {
         // 1. JPQL 사용시 기본 엔티티 연관관계를 보고 조인하지 않는다. 페치 조인은 타겟 대상도 한 쿼리로 로딩 한다.
         // 2. fetch 조인을 사용 하여서 N+1 쿼리를 하나의 쿼리로 바꿀 수 있다.
-        List<Member> byIdJoinJpql = memberService.findByIdJoinFetchJpql();
+        List<Member> byIdJoinJpql = memberService.findByIdJoinFetchQD();
         for (Member member : byIdJoinJpql) {
             System.out.println(member.getName());
         }
@@ -107,44 +82,31 @@ public class JPAQueryTest {
     }
 
     @Test
-    public void findMemberOrderByJpql() {
-        memberService.findOrderByJpql();
+    public void findMemberOrderByQD() {
+        memberService.findOrderByQD();
     }
 
     @Test
     public void findAllOrderBy() {
-        memberService.findMembersWithSort();
+        List<Member> membersWithSort = memberService.findMembersWithSort();
+        for (Member member : membersWithSort) {
+        System.out.println(member.getAddress().getCity());
+        }
     }
 
     //    ===================================== WHERE, BETWEEN, IN, 비교문, like ====================================
+
     @Test
-    public void findWhereBetween() {
-        List<Member> members = memberService.findWhereBtween();
+    public void findWhereBetweenQD() {
+        List<Member> members = memberService.findWhereBetweenQD();
         for (Member member : members) {
             System.out.println(member.getName());
         }
     }
 
     @Test
-    public void findWhereBetweenJpql() {
-        List<Member> members = memberService.findWhereBetweenJpql();
-        for (Member member : members) {
-            System.out.println(member.getName());
-        }
-    }
-
-    @Test
-    public void findWhereIn() {
-        List<Long> longList = Arrays.asList(1L, 9L);
-        List<Member> members = memberService.findWhereIn(longList);
-        for (Member member : members) {
-            System.out.println(member.getName());
-        }
-    }
-
-    @Test
-    public void findWhereInJpql() {
-        List<Member> members = memberService.findWhereInJpql(Arrays.asList(8L, 10L));
+    public void findWhereInQD() {
+        List<Member> members = memberService.findWhereInQD(Arrays.asList(8L, 10L));
         for (Member member : members) {
             System.out.println(member.getName());
         }
@@ -159,8 +121,8 @@ public class JPAQueryTest {
     }
 
     @Test
-    public void findWhereCompareJpql() {
-        List<Member> members = memberService.findWhereCompareJpql();
+    public void findWhereCompareQD() {
+        List<Member> members = memberService.findWhereCompareQD();
         for (Member member : members) {
             System.out.println(member.getName());
         }
@@ -168,77 +130,41 @@ public class JPAQueryTest {
 
     //    ===================================== GROUP BY HAVING ==============================================
     @Test
-    public void groupByBasic() {
-        List<Member> byGroupByBasic = memberService.findByGroupByBasic();
-        for (Member member : byGroupByBasic) {
-            System.out.println(member.getName());
-        }
+    public void findByMaxNameGroupByBasic() {
+        List<Member> byGroupByBasic = memberService.findByMaxNameGroupByBasicQD();
+        byGroupByBasic.forEach(System.out::println);
     }
 
     @Test
-    public void groupByBasicSum() {
+    public void findBySumIdGroupByNameQD() {
         /**
          * 쿼리에 DTO를 매핑 해서 값을 조회 했기 때문에 필요한 컬럼만 select 에 포함 된다.
          */
-        List<MemberDto> byGroupByBasic = memberService.findByGroupBySum();
+        List<MemberDto> byGroupByBasic = memberService.findBySumIdGroupByNameQD();
         for (MemberDto member : byGroupByBasic) {
             System.out.println(member.getName());
         }
     }
 
     @Test
-    public void groupByBasicSumHaving() {
+    public void findByIdSumGroupByBasicSumHaving() {
         /**
          * 쿼리에 DTO를 매핑 해서 값을 조회 했기 때문에 필요한 컬럼만 select 에 포함 된다.
          */
-        List<MemberDto> byGroupByBasic = memberService.findByGroupBySumHaving();
+        List<MemberDto> byGroupByBasic = memberService.findByIdSumGroupBySumHavingQD();
         for (MemberDto member : byGroupByBasic) {
             System.out.println(member.getName());
         }
     }
 
-    //    ===================================== INTERFACE BASED Projection ===================================================
-    @Test
-    public void findByOrderByAsc() {
-        List<MemberProjection> orderByNameAsc = memberService.findOrderByNameAsc();
-        for (MemberProjection memberProjection : orderByNameAsc) {
-            System.out.println(memberProjection.getName());
-        }
-    }
-
-    @Test
-    public void findByOrderByAscJpql() {
-        List<MemberProjection> orderByNameAsc = memberService.findOrderByNameAscJpql();
-        for (MemberProjection memberProjection : orderByNameAsc) {
-            System.out.println(memberProjection.getValues());
-        }
-    }
-//    ===================================== DTO BASED PROJECTION ==========================================================
-    //   @Query(value = "select  new com.example.syshology.jpa.dto.MemberIdDto(m.name, m.id ) from Member m where m.name like %:name%")
-    //  위의 쿼리랑 DTO의 필드 이름이랑 같아야 한다. m.name -> 피드이름 name이어야 한다.
-    @Test
-    public void findByNameLike(){
-        List<MemberIdDto> list = memberService.findByNameLike();
-        for (MemberIdDto memberDto : list) {
-            System.out.println(memberDto.getName());
-        }
-    }
-
-    @Test
-    public void findByNameLikeJpql(){
-        List<MemberIdDto> list = memberService.findByNameLikeJpql();
-        for (MemberIdDto memberDto : list) {
-            System.out.println(memberDto.getName());
-        }
-    }
 //    ===================================== SUBQUERY =====================================================
       // SUBQUERY는 하이버네이트 ENTITY MANAGER를 사용 하든, QUERY DSL을 사용 하라
       // SPRING DATA JPQ 서브쿼리 사용 하려면 NATIVE QUERY 추천
 //    ===================================== 비 연관관계 조인 ===============================================
     @Test
-    public void findByUnReachableJoin(){
-        List<Member> byUnReachableJoin = memberService.findByUnReachableJoin();
-        for (Member member : byUnReachableJoin) {
+    public void findByunReachableJoin(){
+        List<Member> members = memberService.findByunReachableJoinQD();
+        for (Member member : members) {
             System.out.println(member.getAddress().getZipcode());
         }
     }
@@ -277,9 +203,6 @@ public class JPAQueryTest {
             System.out.println(name);
         }
     }
-    /**
-     * 1. 성능과 JPA (즉시로딩 부터 성능 전략까지)
-     * 2. QUERY DSL
-     */
+
 }
 

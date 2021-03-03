@@ -1,9 +1,7 @@
 package com.example.syshology.jpa.service;
 
 import com.example.syshology.jpa.dto.MemberDto;
-import com.example.syshology.jpa.dto.MemberIdDto;
 import com.example.syshology.jpa.entity.Member;
-import com.example.syshology.jpa.projection.MemberProjection;
 import com.example.syshology.jpa.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,6 +39,7 @@ public class MemberService {
         Sort nameSort = Sort.by(Sort.Direction.DESC, "name");
         return memberRepository.findAll(nameSort);
     }
+
     public Member findOne(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new NullPointerException("회원이 존재하지 않습니다."));
     }
@@ -49,16 +48,16 @@ public class MemberService {
         return memberRepository.findMembersByName(name);
     }
 
-    public List<Member> findByJpql() {
-        return memberRepository.findOneJpql();
+    public List<Member> findByQD() {
+        return memberRepository.findOneQD();
     }
 
-    public List<Member> findByIdJoinJpql() {
-        return memberRepository.findOneWithJoinJpql();
+    public List<Member> findJoinQD() {
+        return memberRepository.findJoinQD();
     }
 
-    public List<Member> findByIdJoinFetchJpql() {
-        return memberRepository.findOneJoinFetch();
+    public List<Member> findByIdJoinFetchQD() {
+        return memberRepository.findOneJoinFetchQD();
     }
 
     public List<Member> findOrderByIdDesc() {
@@ -69,63 +68,47 @@ public class MemberService {
         return memberRepository.findMembersByOrderByNameDesc();
     }
 
-    public List<Member> findOrderByJpql() {
-        Sort name = Sort.by(Sort.Direction.DESC, "name");
-        return memberRepository.findMembersByOrderByJpql(name);
+    public List<Member> findOrderByQD() {
+        Sort name = Sort.by(Sort.Order.desc("name"), Sort.Order.asc("id"));
+        return memberRepository.findMembersByOrderByQD(name);
     }
 
-    public List<Member> findWhereBtween() {
-        return memberRepository.findByIdBetween(1L, 100L);
-    }
-    public List<Member> findWhereBetweenJpql() {
-        return memberRepository.findByIdBetweenJpql(1L, 100L);
+    public List<Member> findWhereBetweenQD() {
+        return memberRepository.findByIdBetweenQD(1L, 100L);
     }
 
-    public List<Member> findWhereIn(List<Long> ids) {
-        return memberRepository.findByIdIn(ids);
-    }
 
-    public List<Member> findWhereInJpql(List<Long> ids) {
-        return memberRepository.findByIdInJpql(ids);
+    public List<Member> findWhereInQD(List<Long> ids) {
+        return memberRepository.findByIdInQD(ids);
     }
 
     public List<Member> findWhereCompare() {
         return memberRepository.findByIdGreaterThanAndNameContaining(1L, "A");
     }
 
-    public List<Member> findWhereCompareJpql() {
-        return memberRepository.findByIdGreaterThanAndNameLikeJpql(1L, "A");
+    public List<Member> findWhereCompareQD() {
+        return memberRepository.findByIdGreaterThanAndNameLikeQD(1L, "A");
     }
 
-    public List<Member> findByGroupByBasic(){
-      return   memberRepository.findByAllGroupByBasic();
+    public List<Member> findByMaxNameGroupByBasicQD() {
+        return memberRepository.findByMaxNameGroupByBasicQD();
     }
-    public List<MemberDto> findByGroupBySum(){
-        return memberRepository.findByAllGroupBySum();
+    public List<MemberDto> findBySumIdGroupByNameQD() {
+        return memberRepository.findByidSumGroupByNameQD();
     }
-    public List<MemberDto> findByGroupBySumHaving(){
-        return memberRepository.findByAllGroupBySumHaving("A");
+    public List<MemberDto> findByIdSumGroupBySumHavingQD() {
+        return memberRepository.findByIdSumGroupBySumHavingQD("A");
     }
-     public List<MemberProjection> findOrderByNameAsc(){
-        return memberRepository.findMembersByOrderByIdAsc();
-     }
 
-    public List<MemberProjection> findOrderByNameAscJpql(){
-        return memberRepository.findMembersByOrderByIdAscJpql();
+    public List<Member> findByunReachableJoinQD() {
+        return memberRepository.findByunRechableJoinQD();
     }
-    public List<MemberIdDto> findByNameLike(){
-        return memberRepository.findByNameLike("A");
-    }
-    public List<MemberIdDto> findByNameLikeJpql(){
-        return memberRepository.findByNameLikeJpql("A");
-    }
-    public List<Member> findByUnReachableJoin(){
-        return memberRepository.findByUnReachalbeJoin();
-    }
-    public Page<Member> findByAll(Pageable pageable){
+
+    public Page<Member> findByAll(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }
-    public Page<Member> findMemberByNameInPaging(Pageable pageable){
+
+    public Page<Member> findMemberByNameInPaging(Pageable pageable) {
         return memberRepository.findByNameIn(Arrays.asList("A"), pageable);
     }
 }
