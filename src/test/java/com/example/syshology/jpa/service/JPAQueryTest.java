@@ -3,6 +3,7 @@ package com.example.syshology.jpa.service;
 import com.example.syshology.jpa.dto.MemberDto;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.repository.MemberRepository;
+import com.querydsl.core.QueryResults;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,6 @@ public class JPAQueryTest {
         }
     }
 
-
 //    ===================================== Paging =======================================================
     // 기본 페이징
     @Test
@@ -201,6 +201,14 @@ public class JPAQueryTest {
         for (Member member : members) {
             String name = member.getName();
             System.out.println(name);
+        }
+    }
+    @Test
+    public void findWhereInPagingQD() {
+        QueryResults<Member> members = memberService.findWhereInPagingQD(Arrays.asList(8L, 10L), 0,1);// offset:시작인덱스, limit: 조회할 갯수
+        System.out.println("size::" + members.getTotal());
+        for (Member member : members.getResults()) {
+            System.out.println(member.getName());
         }
     }
 

@@ -4,7 +4,7 @@ import com.example.syshology.jpa.dto.MemberDto;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.entity.QMember;
 import com.example.syshology.jpa.entity.QOrder;
-import com.example.syshology.jpa.projection.MemberProjection;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -13,7 +13,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -112,7 +111,13 @@ public class MemberRepositoryQDImpl implements MemberRepositoryQD {
     public List<Member> findByunRechableJoinQD() {
         QMember member = QMember.member;
         QOrder order = QOrder.order;
-        return jpaQueryFactory.select(member).from(member).join(order).on(member.name.eq( order.delivery().address().city)).fetch();
+        return jpaQueryFactory.select(member).from(member).join(order).on(order.name.eq(member.name)).fetch();
+    }
+
+    @Override
+    public QueryResults<Member> findByIdInPagingQD(List<Long> idList, int offset, int limit) {
+        QMember member = QMember.member;
+        return jpaQueryFactory.select(member).from(member).where(member.id.in(idList)).offset(offset).limit(limit).fetchResults();
     }
 
 

@@ -21,6 +21,7 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @Test
+    @Commit
     public void 회원가입(){
         //Given
         Member member = Member.builder().name("kim").build();
@@ -47,8 +48,8 @@ public class MemberServiceTest {
         memberRepository.findById(1L);
     }
     @Test
-    public void 모두조회WithJpql(){
-        memberRepository.findOneWithJoinJpql();
+    public void joinQD(){
+        memberRepository.findJoinQD();
     }
     @Test
     @Commit

@@ -1,14 +1,12 @@
 package com.example.syshology.jpa.repository;
 
 import com.example.syshology.jpa.dto.MemberDto;
-import com.example.syshology.jpa.dto.MemberIdDto;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.entity.Order;
-import com.example.syshology.jpa.projection.MemberProjection;
+import com.querydsl.core.QueryResults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -34,8 +32,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     public List<MemberDto> findByidSumGroupByNameQD();
 //    @Query(value = "select  new com.example.syshology.jpa.dto.MemberDto(m.name, sum(m.id))  from Member m group by m.name  having m.name like %:name%")
     public List<MemberDto> findByIdSumGroupBySumHavingQD(String name);
-
-    @Query(value = "select m from Member m join m.orders s on m.name = s.delivery.address.city")
+//    @Query(value = "select m from Member m join m.orders s on m.name = s.delivery.address.city")
     public List<Member> findByunRechableJoinQD();
+    public QueryResults<Member> findByIdInPagingQD(List<Long> idList, int offset, int limit) ;
     public Page<Member> findByNameIn(List<String> nameList, Pageable pageable);
 }

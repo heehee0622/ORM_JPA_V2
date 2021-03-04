@@ -3,6 +3,7 @@ package com.example.syshology.jpa.service;
 import com.example.syshology.jpa.dto.MemberDto;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.repository.MemberRepository;
+import com.querydsl.core.QueryResults;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,7 +104,9 @@ public class MemberService {
     public List<Member> findByunReachableJoinQD() {
         return memberRepository.findByunRechableJoinQD();
     }
-
+    public QueryResults<Member> findWhereInPagingQD(List<Long> ids, int offset, int limit) {
+        return memberRepository.findByIdInPagingQD(ids,offset,limit);
+    }
     public Page<Member> findByAll(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }

@@ -3,9 +3,8 @@ package com.example.syshology.jpa.repository;
 import com.example.syshology.jpa.dto.MemberDto;
 import com.example.syshology.jpa.entity.Member;
 import com.example.syshology.jpa.entity.Order;
-import com.example.syshology.jpa.projection.MemberProjection;
+import com.querydsl.core.QueryResults;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -32,5 +31,6 @@ public interface MemberRepositoryQD {
     public List<MemberDto> findByIdSumGroupBySumHavingQD(String name);
 //    @Query(value = "select m from Member m join m.orders s on m.name = s.delivery.address.city")
     public List<Member> findByunRechableJoinQD();
+    public QueryResults<Member> findByIdInPagingQD(List<Long> idList, int offset, int limit) ;
 
 }
