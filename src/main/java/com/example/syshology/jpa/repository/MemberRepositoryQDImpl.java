@@ -45,7 +45,7 @@ public class MemberRepositoryQDImpl implements MemberRepositoryQD {
     public List<Member> findJoinQD() {
         QMember member = QMember.member;
         QOrder order = QOrder.order;
-        return jpaQueryFactory.selectFrom(member).join(member.orders, order).fetch();
+        return jpaQueryFactory.selectFrom(member ).join(member.orders, order).fetch();
     }
 
     @Override

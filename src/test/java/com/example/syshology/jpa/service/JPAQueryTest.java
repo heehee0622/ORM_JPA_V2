@@ -39,8 +39,10 @@ public class JPAQueryTest {
 ///        1. id 조건으로 조회 하지 않기 때문에 엔티티 연관관계를 보고 조인하지 않는다.
 //        2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다. (현재 fetch batch가 설정되어 있기에 in 조건으로 하나의 쿼리로  조회한다.)
         List<Member> members = memberService.findByQD();
+//        memberService.findByName("userA");
+//        memberRepository.findById(1L);
         for (Member member : members) {
-            System.out.println(member.getName());
+            System.out.println(member.getOrders());
         }
     }
     @Test
@@ -56,9 +58,9 @@ public class JPAQueryTest {
         // 1. JPQL 사용시 기본 엔티티 연관관계를 보고 조인하지 않는다.
         // 2. 멤버를 조회 후 로딩 된 엔티티에서 연관관계의 fetch 전략을 보고 즉시로딩이면 조회 한다.
         List<Member> byIdJoinJpql = memberService.findJoinQD();
-        for (Member member : byIdJoinJpql) {
-            System.out.println(member.getName());
-        }
+//        for (Member member : byIdJoinJpql) {
+//            System.out.println(member.getName());
+//        }
     }
 
     @Test
@@ -66,9 +68,9 @@ public class JPAQueryTest {
         // 1. JPQL 사용시 기본 엔티티 연관관계를 보고 조인하지 않는다. 페치 조인은 타겟 대상도 한 쿼리로 로딩 한다.
         // 2. fetch 조인을 사용 하여서 N+1 쿼리를 하나의 쿼리로 바꿀 수 있다.
         List<Member> byIdJoinJpql = memberService.findByIdJoinFetchQD();
-        for (Member member : byIdJoinJpql) {
-            System.out.println(member.getName());
-        }
+//        for (Member member : byIdJoinJpql) {
+//            System.out.println(member.getName());
+//        }
     }
 
     // ========================================== ORDER BY ===================================================

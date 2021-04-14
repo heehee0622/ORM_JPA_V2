@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class OrderServiceTest {
     OrderRepository orderRepository;
 
     @Test
+    @Commit
     public void 상품준문() throws Exception {
         //Given
         Member member = createMember();
